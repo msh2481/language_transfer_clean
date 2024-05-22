@@ -5,17 +5,17 @@ import torch as t
 from beartype import beartype as typed
 from jaxtyping import Float
 from language_modeling import cloze_test
-from sklearn.cluster import KMeans
+from sklearn.cluster import KMeans  # type: ignore
 from torch import Tensor as TT
-from tqdm import tqdm
-from transformers import AutoModelForCausalLM, AutoTokenizer
+from tqdm import tqdm  # type: ignore
+from transformers import AutoModelForCausalLM, AutoTokenizer  # type: ignore
 
 
 SVD_CUTOFF = 200
 CLUSTERS_CUTOFF = 25
 
-PLOT_SPECTRUM = False
-PLOT_CLUSTERS = False
+PLOT_SPECTRUM = True
+PLOT_CLUSTERS = True
 PLOT_CLOZE = True
 
 
@@ -53,11 +53,12 @@ def analyze_cloze(model_name: str) -> dict[str, float]:
     return results
 
 
+repo_name = open("SECRET.txt").read().strip()
 embeddings_model_names = {
     "scratch": "roneneldan/TinyStories-8M",
-    "nested": "Mlxa/embeddings-nested-english",
-    "flat": "Mlxa/embeddings-flat-english",
-    "shuffle": "Mlxa/embeddings-flat_shuffle-english",
+    "nested": f"{repo_name}/embeddings-nested-english",
+    "flat": f"{repo_name}/embeddings-flat-english",
+    "shuffle": f"{repo_name}/embeddings-flat_shuffle-english",
 }
 
 embeddings = {
@@ -104,12 +105,12 @@ if PLOT_CLOZE:
         tasks = json.load(f)
 
     model_names = {
-        "nested E": "Mlxa/embeddings-nested-english",
-        "nested ELT": "Mlxa/tuned-nested-english",
-        "flat E": "Mlxa/embeddings-flat-english",
-        "flat ELT": "Mlxa/tuned-flat-english",
-        "shuffle E": "Mlxa/embeddings-flat_shuffle-english",
-        "shuffle ELT": "Mlxa/tuned-flat_shuffle-english",
+        "nested E": f"{repo_name}/embeddings-nested-english",
+        "nested ELT": f"{repo_name}/tuned-nested-english",
+        "flat E": f"{repo_name}/embeddings-flat-english",
+        "flat ELT": f"{repo_name}/tuned-flat-english",
+        "shuffle E": f"{repo_name}/embeddings-flat_shuffle-english",
+        "shuffle ELT": f"{repo_name}/tuned-flat_shuffle-english",
         "scratch 8M": "roneneldan/TinyStories-8M",
         "scratch 33M": "roneneldan/TinyStories-33M",
     }
@@ -150,7 +151,7 @@ if PLOT_CLOZE:
     )
 
     table_rows = ""
-    averages = {key: [] for key in model_names.keys()}
+    averages: dict[str, list[float]] = {key: [] for key in model_names.keys()}
 
     for task, task_name in task_names.items():
         row = f"    \\scriptsize{{{task}}} "

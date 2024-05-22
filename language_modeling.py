@@ -5,11 +5,10 @@ import torch as t
 import torch.nn as nn
 import torch.nn.functional as F
 from beartype import beartype as typed
-from datasets import IterableDataset
+from datasets import IterableDataset  # type: ignore
 from jaxtyping import Float, Int
-from tokenization import dependencies_tokenizer
 from torch import Tensor as TT
-from transformers import PreTrainedModel, PreTrainedTokenizerBase
+from transformers import PreTrainedModel, PreTrainedTokenizerBase  # type: ignore
 
 
 @typed
