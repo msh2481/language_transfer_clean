@@ -20,6 +20,8 @@ matplotlib = "^3.9.0"
 ipython = "^8.24.0"
 jupyter = "^1.0.0"
 notebook = "^7.2.0"
+pandas = "^2.2.2"
+nltk = "^3.8.1"
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.4.2"

@@ -29,8 +29,16 @@ To pre-train the language model use `training.ipynb` notebook and to fine-tune u
 The notebooks will output the values used for Table 1, together with some visualizations of per token losses.
 Pre-training takes ~4h for each language and fine-tuning takes ~1h in each direction, on T4 GPU.
 
-To reproduce Table 2 (Results on Tiny-Cloze benchmark) and Figures 2-3 (Spectrum and Clustering), run:
+To reproduce Table 2 (Results on Tiny-Cloze benchmark) and Figures 2-4 (Spectrum, Clustering, Probes), first run:
+```bash
+python feature_engineering.py
+```
+It will produce `word_features.csv` in ~10 minutes on CPU.
+
+Then run:
 ```bash
 python generate_figures.py
 ```
-It takes several minutes to run on CPU.
+It will take several more minutes.
+
+

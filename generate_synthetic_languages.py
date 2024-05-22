@@ -9,7 +9,7 @@ from beartype import beartype as typed
 from beartype.typing import Callable
 from beartype.vale import Is
 from tokenization import dependencies_tokenizer
-from tqdm import tqdm
+from tqdm import tqdm  # type: ignore
 from transformers import PreTrainedTokenizerFast  # type: ignore
 from utils import seed_everything
 

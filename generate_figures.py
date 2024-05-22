@@ -1,10 +1,13 @@
 import json
 
 import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd  # type: ignore
 import torch as t
 from beartype import beartype as typed
 from jaxtyping import Float
 from language_modeling import cloze_test
+from probes import mixed_probe
 from sklearn.cluster import KMeans  # type: ignore
 from torch import Tensor as TT
 from tqdm import tqdm  # type: ignore
@@ -14,9 +17,10 @@ from transformers import AutoModelForCausalLM, AutoTokenizer  # type: ignore
 SVD_CUTOFF = 200
 CLUSTERS_CUTOFF = 25
 
-PLOT_SPECTRUM = True
-PLOT_CLUSTERS = True
-PLOT_CLOZE = True
+COMPUTE_SPECTRUM = False
+COMPUTE_CLUSTERS = False
+COMPUTE_CLOZE = False
+COMPUTE_PROBE = True
 
 
 @typed
@@ -53,6 +57,13 @@ def analyze_cloze(model_name: str) -> dict[str, float]:
     return results
 
 
+@typed
+def analyze_probe(
+    embedding: Float[TT, "n d"], features: pd.DataFrame
+) -> dict[str, float]:
+    return mixed_probe(embedding, features)
+
+
 repo_name = open("SECRET.txt").read().strip()
 embeddings_model_names = {
     "scratch": "roneneldan/TinyStories-8M",
@@ -72,7 +83,7 @@ styles = {
     "shuffle": "-.",
 }
 
-if PLOT_SPECTRUM:
+if COMPUTE_SPECTRUM:
     plt.figure(figsize=(10, 10), dpi=200)
     for name, emb in tqdm(embeddings.items()):
         sp = spectrum(emb)
@@ -86,7 +97,7 @@ if PLOT_SPECTRUM:
     plt.savefig(f"img/spectrum.png")
     print("Spectrum plot ready")
 
-if PLOT_CLUSTERS:
+if COMPUTE_CLUSTERS:
     plt.figure(figsize=(10, 10), dpi=200)
     save = {}
     for name, emb in tqdm(embeddings.items()):
@@ -100,7 +111,7 @@ if PLOT_CLUSTERS:
     plt.savefig(f"img/clusters.png")
     print("Clusters plot ready")
 
-if PLOT_CLOZE:
+if COMPUTE_CLOZE:
     with open("cloze_tasks.json") as f:
         tasks = json.load(f)
 
@@ -185,3 +196,17 @@ if PLOT_CLOZE:
     with open("results_table.tex", "w") as f:
         f.write(latex_table)
     print("Cloze test table ready")
+
+if COMPUTE_PROBE:
+    features = pd.read_csv("word_features.csv", escapechar="\\")
+    features["frequency"] = features["frequency"].astype(float).apply(np.log1p)
+    features = pd.get_dummies(features, columns=["pos_tag"])
+    to_remove = [c for c in features.columns if (features[c] != False).sum() < 200]
+    features = features.drop(to_remove, axis=1)
+
+    names = ["scratch", "nested", "flat", "shuffle"]
+    results = {name: analyze_probe(embeddings[name], features) for name in names}
+
+    with open("probe_results.json", "w") as f:
+        json.dump(results, f, indent=2)
+    print("Probe results ready")
