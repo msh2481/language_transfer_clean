@@ -1,0 +1,24 @@
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{|p{70pt}|*{8}{p{27pt}|}}
+\hline & \texttt{\scriptsize{nested E}} & \texttt{\scriptsize{nested ELT}} & \texttt{\scriptsize{flat E}} & \texttt{\scriptsize{flat ELT}} & \texttt{\scriptsize{shuffle E}} & \texttt{\scriptsize{shuffle ELT}} & \texttt{\scriptsize{scratch 8M}} & \texttt{\scriptsize{scratch 33M}}\\
+\hline
+    \scriptsize{synonyms and antonyms} & 0.24 & 0.18 & 0.22 & 0.13 & 0.31 & 0.25 & 0.25 & 0.28 \\ \hline
+    \scriptsize{single - plural} & 0.08 & 0.15 & 0.19 & 0.50 & 0.03 & 0.33 & 0.58 & 0.71 \\ \hline
+    \scriptsize{logical relations} & -0.08 & -0.30 & -0.44 & -0.18 & -0.13 & -0.08 & -0.04 & 0.09 \\ \hline
+    \scriptsize{subject-verb agreement} & 0.54 & 0.45 & 0.46 & 0.36 & 0.14 & 0.26 & 0.83 & 0.98 \\ \hline
+    \scriptsize{prepositions} & 0.43 & 0.52 & 0.51 & 0.53 & 0.40 & 0.48 & 0.94 & 1.12 \\ \hline
+    \scriptsize{conjunctions} & 0.46 & 0.43 & 0.45 & 0.38 & 0.36 & 0.49 & 0.63 & 0.82 \\ \hline
+    \scriptsize{temporal understanding} & -0.13 & -0.02 & -0.14 & 0.04 & 0.09 & 0.36 & 0.44 & 0.73 \\ \hline
+    \scriptsize{spatial understanding} & 0.13 & 0.30 & 0.40 & 0.48 & 0.06 & 0.37 & 0.64 & 0.71 \\ \hline
+    \scriptsize{quantitative reasoning} & -0.06 & 0.00 & -0.14 & -0.01 & -0.14 & -0.04 & -0.04 & -0.06 \\ \hline
+    \scriptsize{emotions} & -0.08 & 0.03 & 0.05 & 0.07 & 0.20 & -0.01 & 0.61 & 0.77 \\ \hline
+    \scriptsize{narrative understanding} & -0.07 & -0.04 & 0.03 & 0.07 & 0.04 & 0.04 & 0.17 & 0.27 \\ \hline
+    \scriptsize{ethics} & 0.32 & 0.17 & 0.34 & 0.22 & 0.27 & 0.30 & 0.25 & 0.51 \\ \hline
+\hline\scriptsize{{\textbf{{Average}}}} & 0.15 & 0.16 & 0.16 & 0.22 & 0.14 & 0.23 & 0.44 & 0.58 \\
+\hline
+\end{tabular}
+\caption{Results on the Tiny-Cloze benchmark. Fine-tuning on \texttt{flat\_shuffle} gives the highest average score across three synthetic languages.}
+\label{tab:cloze}
+\end{table}
